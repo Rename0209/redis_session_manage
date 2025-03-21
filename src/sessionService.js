@@ -7,7 +7,9 @@ export const saveSession = async (psid, timestamp) => {
     const session_timestamp = Math.floor(Date.now() / 1000) + SESSION_TTL;
 
     // Lưu session với TTL khớp với session_timestamp
-    await client.sendCommand(['SET', key, session_timestamp.toString(), 'EXAT', session_timestamp]);
+    await client.set(key, session_timestamp.toString(), {
+        EXAT: session_timestamp
+    });
 
     return { key, session_timestamp };
 };
