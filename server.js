@@ -1,10 +1,10 @@
 import express from 'express';
+import cors from 'cors';
 import { saveSession, getSession } from './src/sessionService.js';
-res.setHeader('Access-Control-Allow-Origin', '*');
-res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 app.post('/session', async (req, res) => {
