@@ -14,7 +14,7 @@ app.post('/session', async (req, res) => {
     }
 
     const { key, session_timestamp } = await saveSession(psid, timestamp);
-    res.json({ message: 'Session saved', key, session_timestamp });
+    res.json({ message: 'Session saved', key, timestamp: session_timestamp });
 });
 
 app.get('/session/:psid/:timestamp', async (req, res) => {
