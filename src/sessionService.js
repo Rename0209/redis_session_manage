@@ -28,9 +28,10 @@ export const getSession = async (psid, timestamp) => {
         });
 
         return {
-            isExpired: false
+            isExpired: false,
+            timestamp: session_timestamp
         };
     }
 
-    return { isExpired: true };
+    return { isExpired: true, timestamp: session_timestamp };
 };
