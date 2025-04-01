@@ -1,8 +1,16 @@
 import client from './redisClient.js';
+import { decryptAES } from "../utils/encryption.js";
 
 const SESSION_TTL = 20 * 60; // 20 phút
 
-export const saveSession = async (psid, timestamp) => {
+export const saveSession = async (token, timestamp) => {
+
+    // Giải mã token
+    const psid = decryptAES(token);
+    if (!psid) {
+        return res.status(400).json({ message: "Token không hợp lệ!" });
+    }
+
     const key = `${psid}:${timestamp}`;
     const session_timestamp = Math.floor(Date.now() / 1000) + SESSION_TTL;
 
@@ -14,7 +22,13 @@ export const saveSession = async (psid, timestamp) => {
     return { key, session_timestamp };
 };
 
-export const getSession = async (psid, timestamp) => {
+export const getSession = async (token, timestamp) => {
+     // Giải mã token
+     const psid = decryptAES(token);
+     if (!psid) {
+         return res.status(400).json({ message: "Token không hợp lệ!" });
+     }
+
     const key = `${psid}:${timestamp}`;
     const session_timestamp = await client.get(key);
 

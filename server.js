@@ -8,19 +8,19 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/session', async (req, res) => {
-    const { psid, timestamp } = req.body;
-    if (!psid || !timestamp) {
-        return res.status(400).json({ error: 'Missing psid or timestamp' });
+    const { token, timestamp } = req.body;
+    if (!token || !timestamp) {
+        return res.status(400).json({ error: 'Missing token or timestamp' });
     }
 
-    const { key, session_timestamp } = await saveSession(psid, timestamp);
+    const { key, session_timestamp } = await saveSession(token, timestamp);
     res.json({ message: 'Session saved', key, timestamp: session_timestamp });
 });
 
-app.get('/session/:psid/:timestamp', async (req, res) => {
-    const { psid, timestamp } = req.params;
+app.get('/session/:token/:timestamp', async (req, res) => {
+    const { token, timestamp } = req.params;
 
-    const session_timestamp = await getSession(psid, timestamp);
+    const session_timestamp = await getSession(token, timestamp);
     if (!session_timestamp) {
         return res.status(404).json({ error: 'Session not found or expired' });
     }
@@ -28,5 +28,5 @@ app.get('/session/:psid/:timestamp', async (req, res) => {
     res.json(session_timestamp);
 });
 
-const PORT = 3000;
+const PORT = 4000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
