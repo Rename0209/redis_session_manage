@@ -1,10 +1,23 @@
 import express from 'express';
 import cors from 'cors';
 import { saveSession, getSession } from './src/sessionService.js';
+import dotenv from 'dotenv';
+
+// Load biến môi trường
+dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// Cấu hình CORS
+const corsOptions = {
+    origin: process.env.CORS_ORIGINS.split(','),
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post('/session', async (req, res) => {
